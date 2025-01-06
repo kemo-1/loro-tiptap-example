@@ -10,11 +10,10 @@ import { Editor, Extension } from '@tiptap/core'
 import StarterKit from '@tiptap/starter-kit'
 
 
-import { CursorAwareness } from "loro-prosemirror";
-import { LoroUndoPlugin } from "loro-prosemirror";
-import { LoroCursorPlugin } from "loro-prosemirror";
+import { LoroSyncPlugin, LoroCursorPlugin, CursorAwareness, LoroUndoPlugin } from "loro-prosemirror";
+
 import { LoroDoc } from "loro-crdt";
-import { LoroSyncPlugin } from "loro-prosemirror";
+
 
 
 const loro_document = new LoroDoc();
@@ -28,6 +27,7 @@ const loroSyncPlugin = Extension.create({
   addProseMirrorPlugins() {
     return [
       LoroSyncPlugin({
+        //@ts-ignore
         doc: loro_document
       })
     ]
@@ -60,7 +60,7 @@ const loroUndoPlugin = Extension.create({
 })
 
 
-const editor = new Editor({
+new Editor({
 
 
   element: document.querySelector('.element')!,

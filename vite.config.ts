@@ -3,6 +3,9 @@ import topLevelAwait from 'vite-plugin-top-level-await'
 import { defineConfig } from 'vite'
 
 export default defineConfig({
-    base: "loro-tiptap-example",
+    build: {
+        target: 'esnext' //browsers can handle the latest ES features
+    },
+    base: "/loro-tiptap-example",
     plugins: [wasm(), topLevelAwait()],
 })
