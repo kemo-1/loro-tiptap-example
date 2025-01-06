@@ -5,55 +5,63 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 <div class="element"></div>
 `
 
+
 import { Editor, Extension } from '@tiptap/core'
 import StarterKit from '@tiptap/starter-kit'
 
-import {
-  CursorAwareness,
-  LoroCursorPlugin,
-  LoroSyncPlugin,
-  LoroUndoPlugin,
-} from "loro-prosemirror";
+
+import { CursorAwareness } from "loro-prosemirror";
+import { LoroUndoPlugin } from "loro-prosemirror";
+import { LoroCursorPlugin } from "loro-prosemirror";
 import { LoroDoc } from "loro-crdt";
+import { LoroSyncPlugin } from "loro-prosemirror";
 
 
-const doc = new LoroDoc();
-const awareness = new CursorAwareness(doc.peerIdStr);
+const loro_document = new LoroDoc();
+const awareness = new CursorAwareness(loro_document.peerIdStr);
 
 
 
-let loroSyncPlugin = Extension.create({
-  name: 'LoroSyncPlugin',
-
-  addProseMirrorPlugins() {
-    return [
-      LoroSyncPlugin({ doc })
-    ]
-  },
-})
-let loroCursorPlugin = Extension.create({
-  name: 'LoroCursorPlugin',
+const loroSyncPlugin = Extension.create({
+  name: 'loro-sync',
 
   addProseMirrorPlugins() {
     return [
-      LoroCursorPlugin(awareness, {}),
+      LoroSyncPlugin({
+        doc: loro_document
+      })
+    ]
+  },
+})
+const loroCursorPlugin = Extension.create({
+  name: 'loro-cursor',
+
+  addProseMirrorPlugins() {
+    return [
+      LoroCursorPlugin(awareness, {
+        user: {
+          name: "hey",
+          color: "#dddF"
+        }
+      }),
     ]
   },
 })
 
-let loroUndoPlugin = Extension.create({
-  name: 'LoroUndoPlugin',
+const loroUndoPlugin = Extension.create({
+  name: 'loro-undo',
 
   addProseMirrorPlugins() {
     return [
       LoroUndoPlugin({
-        doc: doc
+        doc: loro_document
       }),]
   },
 })
 
 
 const editor = new Editor({
+
 
   element: document.querySelector('.element')!,
   extensions: [StarterKit.configure({ history: false }), loroSyncPlugin, loroCursorPlugin, loroUndoPlugin],

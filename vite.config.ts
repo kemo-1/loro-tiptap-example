@@ -3,5 +3,6 @@ import topLevelAwait from 'vite-plugin-top-level-await'
 import { defineConfig } from 'vite'
 
 export default defineConfig({
+    base: "loro-tiptap-example",
     plugins: [wasm(), topLevelAwait()],
 })
